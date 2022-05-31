@@ -24,7 +24,7 @@ def get_style_code(style, style_aligned):
     
     style_code_path = os.path.join("inversion_codes", f"{style}.pt")
     if not os.path.exists(style_code_path):
-        latent = e4e_projection(style_aligned, style_code_path, device)
+        latent = e4e(style_aligned, style_code_path, device)
     else:
         latent = torch.load(style_code_path)["latent"]
     return latent
