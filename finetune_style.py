@@ -2,6 +2,7 @@ from torch import optim
 from torch.nn import functional as F
 from tqdm import tqdm
 from pretrained_style import *
+from time import time
 
 
 def align_style_images(style):
@@ -94,6 +95,18 @@ def finetune_generator(styles, transform, alpha, preserve_color, num_iter):
     return generator
 
 
+def latent_to_image(file_name, projection):
+    '''Converts the latent vector to an image by passing it through the StyleGAN2 generator.'''
+    
+    aligned_face, name = align_face_helper(file_name)
+    my_w = projection(aligned_face, name, device).unsqueeze(0)   
+    original_generator = load_original_generator(latent_dim=512)
+    with torch.no_grad():
+        original_generator.eval()
+        my_sample = original_generator(my_w, input_is_latent=True)
+    display_image(utils.make_grid(my_sample, normalize=True, value_range=(-1, 1)), title="Generated Image")
+
+
 def main(file_name, styles):
     '''
     Aligns the target image. Then fine-tunes the original generator for the given style(s). 
@@ -114,5 +127,9 @@ def main(file_name, styles):
 
 if __name__ == "__main__":
     file_name = "Photo.jpeg"
-    styles = ["sketch1.jpeg", "sketch2.jpeg", "sketch3.jpeg", "sketch4.jpeg"] 
-    main(file_name, styles)
+    # styles = ["sketch1.jpeg", "sketch2.jpeg", "sketch3.jpeg", "sketch4.jpeg"] 
+    # main(file_name, styles)
+    start = time()
+    latent_to_image(file_name, e4e)
+    end = time()
+    print(f"Time taken: {end - start:0.2f}s")

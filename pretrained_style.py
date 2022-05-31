@@ -4,8 +4,8 @@ from PIL import Image
 from util import *
 from model import *
 from download_data import *
-from e4e_projection import projection as e4e_projection
-
+from e4e_projection import projection as e4e
+from restyle_projection import projection as restyle
 
 device = "cpu"
 latent_dim = 512
@@ -41,13 +41,13 @@ def load_finetuned_generator(preserve_color, style):
     return generator
 
 
-def generate_sample(aligned_face, name, seed, generator):
+def generate_sample(projection, aligned_face, name, seed, generator):
     '''
     Generates an image where the reference style is applied to the target image
     by passing the latent code of the target image through the pretrained generator.
     '''
     
-    my_w = e4e_projection(aligned_face, name, device).unsqueeze(0)
+    my_w = projection(aligned_face, name, device).unsqueeze(0)
     torch.manual_seed(seed)
     with torch.no_grad():
         generator.eval()
@@ -82,7 +82,7 @@ def transform_style_images(styles, transform):
     return style_images
 
 
-def main(file_name, style):
+def main(file_name, style, projection):
     '''
     Aligns the target image. Then loads the fine-tuned generator for 
     the given style and passes the image's code through it after which it is 
@@ -92,7 +92,7 @@ def main(file_name, style):
     style = [style]
     aligned_face, name = align_face_helper(file_name)
     generator = load_finetuned_generator(preserve_color=False, style=style[0])
-    my_sample = generate_sample(aligned_face, name, 3000, generator)
+    my_sample = generate_sample(projection, aligned_face, name, 3000, generator)
     transform = get_transform(1024, 0.5, 0.5)
     face = transform(aligned_face).unsqueeze(0).to(device)
     style_image = transform_style_images(style, transform)
@@ -102,6 +102,7 @@ def main(file_name, style):
 
 if __name__ == "__main__":
     # options = ["art", "arcane_caitlyn", "arcane_jinx", "disney", "jojo", "jojo_yasuho", "sketch_multi"]
-    style = "jojo"
+    style = "art"
     file_name = "Photo.jpeg"
-    main(file_name, style)
+    projection = e4e
+    main(file_name, style, projection)

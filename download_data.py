@@ -55,9 +55,10 @@ def download_from_drive(file_name):
 def main():
     '''Downloads the facial landmarks, pretrained StyleGAN2 and e4e model.'''
 
-    download_face_landmarks_model()
-    download_from_drive("stylegan2-ffhq-config-f.pt")
-    download_from_drive("e4e_ffhq_encode.pt")
+    # download_face_landmarks_model()
+    # download_from_drive("stylegan2-ffhq-config-f.pt")
+    # download_from_drive("e4e_ffhq_encode.pt")
+    download_from_drive("restyle_psp_ffhq_encode.pt")
     
 
 if __name__ == "__main__":
