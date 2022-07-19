@@ -1,4 +1,4 @@
-# jojo-gan
+# jojo-gan-restyle
 
 This repository aims to perform one-shot image stylization getting the facial stylistic details right. Given a reference style image, paired real data is approximated using GAN inversion and a pretrained StyleGAN is fine-tuned using that approximate paired data. The StyleGAN is then encouraged to generalize so that the learned style can be applied to all other images.
 
