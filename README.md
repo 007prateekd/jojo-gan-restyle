@@ -4,7 +4,7 @@ This repository aims to perform one-shot image stylization getting the facial st
 
 ## Improvements
 
-Added support for `restyle` GAN inverter which performs better than the already existing `e4e`. This also improves the overall performance of JoJoGAN. Also created well-documented and modular Python scripts to easily pre-train and fine-tune JoJoGAN. 
+Added support for _restyle_ GAN inverter which performs better than the already existing _e4e_. This also improves the overall performance of JoJoGAN. Also created well-documented and modular Python scripts to easily pre-train and fine-tune JoJoGAN. 
 
 ## Usage
 
